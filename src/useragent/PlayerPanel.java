@@ -41,12 +41,15 @@ import net.sf.fmj.ui.wizards.TranscodeWizard;
 import net.sf.fmj.utility.LoggerSingleton;
 import net.sf.fmj.utility.PathUtils;
 import net.sf.fmj.utility.URLUtils;
-import net.sf.fmj.ui.application.ContainerPlayer;
 
-public class playerpanel extends JPanel {
-	
+/**
+ * 
+ * @author Warren Bloomer
+ *
+ */
+public class PlayerPanel extends JPanel {
+
 	private static final Logger logger = LoggerSingleton.logger;
-
 
 	private PlayerPanelPrefs prefs;
 
@@ -558,4 +561,4 @@ public class playerpanel extends JPanel {
 		return statusBar;
 	}
 
-}
+}  //  @jve:decl-index=0:visual-constraint="10,10"

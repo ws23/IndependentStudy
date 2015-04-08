@@ -38,7 +38,6 @@ import net.sf.fmj.ui.control.TransportControlState;
 import net.sf.fmj.utility.ClasspathChecker;
 import net.sf.fmj.utility.LoggerSingleton;
 import net.sf.fmj.utility.URLUtils;
- 
 
 /**
  * ContainerPlayer.
@@ -47,7 +46,7 @@ import net.sf.fmj.utility.URLUtils;
  * 
  * @author Warren Bloomer
  */
-public class containerplayer implements TransportControl, SourcedTimerListener, TimeSource {
+public class ContainerPlayer implements TransportControl, SourcedTimerListener, TimeSource {
 
 	private static final Logger logger = LoggerSingleton.logger;
 
