@@ -100,6 +100,7 @@ public class useragent {
 			menuItemCreate.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
+						// TODO: Action Event
 						// playerPanel.onOpenCaptureDevice();
 					}
 				}
@@ -113,8 +114,9 @@ public class useragent {
 			menuItemOpen.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
+						// TODO: Action Event
 						//playerPanel.onOpenFile();
-						playerPanel.onReceiveRTP();
+						//playerPanel.onReceiveRTP();
 					}
 				}
 			);
@@ -125,7 +127,7 @@ public class useragent {
 			menuItemClose.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						// Action Event
+						// TODO: Action Event
 					}
 				}
 			);
@@ -154,7 +156,7 @@ public class useragent {
 			menuItemPlay.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						// Action Event
+						// TODO: Action Event
 					}
 				}
 			);			
@@ -165,7 +167,7 @@ public class useragent {
 			menuItemPause.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						// Action Event
+						// TODO: Action Event
 					}
 				}
 			);			
@@ -176,7 +178,7 @@ public class useragent {
 			menuItemStop.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						// Action Event
+						// TODO: Action Event
 					}
 				}
 			);			
@@ -194,7 +196,7 @@ public class useragent {
 			menuItemHelp.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						// Action Event
+						// TODO: Action Event
 					}
 				}
 			);			
@@ -207,7 +209,7 @@ public class useragent {
 			menuItemConfig.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						// Action Event
+						// TODO: Action Event
 					}
 				}
 			);			
@@ -219,7 +221,7 @@ public class useragent {
 			menuItemAbout.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						// Action Event
+						// TODO: Action Event
 					}
 				}
 			);			

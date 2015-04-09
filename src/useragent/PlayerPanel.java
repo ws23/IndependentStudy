@@ -32,7 +32,6 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
-import net.sf.fmj.ui.control.TransportControlPanel;
 import net.sf.fmj.ui.dialogs.RTPReceivePanel;
 import net.sf.fmj.ui.dialogs.URLPanel;
 import net.sf.fmj.ui.wizards.RTPTransmitWizard;
@@ -311,7 +310,7 @@ public class PlayerPanel extends JPanel {
 	private TransportControlPanel getTransportControlPanel() {
 		if (transportControlPanel == null) {
 			transportControlPanel = new TransportControlPanel();
-			transportControlPanel.setPlayer(getContainerPlayer());
+			//transportControlPanel.setPlayer(getContainerPlayer());
 		}
 		return transportControlPanel;
 	}
