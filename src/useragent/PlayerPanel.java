@@ -54,37 +54,10 @@ public class PlayerPanel extends JPanel {
 	private PlayerPanelPrefs prefs;
 
 	
-	private JToolBar playerToolBar = null;
-	private JButton openButton = null;
-	private JButton openCaptureDeviceButton = null;
 	private TransportControlPanel transportControlPanel = null;
 	private JLabel statusBar = null;
 	private JPanel videoPanel = null;
-	private JComboBox addressComboBox = null;
-	private JButton loadButton = null;
-	private JPanel addressPanel = null;
-	private JLabel locationLabel = null;
 	private ContainerPlayer containerPlayer = null;  //  @jve:decl-index=0:visual-constraint="557,162"
-
-	public void addMediaLocatorAndLoad(String url) {
-		boolean alreadyThere = false;
-		for (int i = 0; i < getAddressComboBox().getItemCount(); ++i)
-		{	if (getAddressComboBox().getItemAt(i).equals(url))
-			{
-				alreadyThere = true;
-				break;
-			}
-		}
-		if (!alreadyThere)
-		{	getAddressComboBox().addItem(url);
-		}
-		
-		if (getAddressComboBox().getSelectedItem() == null || !getAddressComboBox().getSelectedItem().equals(url))
-			getAddressComboBox().setSelectedItem(url);	// will auto-load
-		else
-			onLoadButtonClick();	// already selected
-	}
-	
 
 	
 	/**
@@ -107,141 +80,8 @@ public class PlayerPanel extends JPanel {
 		}
 		return videoPanel;
 	}
-	/**
-	 * This method initializes addressComboBox	
-	 * 	
-	 * @return javax.swing.JComboBox	
-	 */
-	private JComboBox getAddressComboBox() {
-		if (addressComboBox == null) {
-			addressComboBox = new JComboBox();
-			addressComboBox.setEditable(true);
-			addressComboBox.setPreferredSize(new Dimension(160, 27));
-			for (int i=0; i<prefs.recentUrls.size(); i++) {
-				addressComboBox.addItem((String) prefs.recentUrls.get(i));
-			}
-			addressComboBox.setSelectedIndex(-1);	// nothing selected by default.
-			
-			// load an item when selected from the list 
-			addressComboBox.addItemListener(
-					new ItemListener() {
-						public void itemStateChanged(ItemEvent e) {
-							// TODO: typing in the combo and clicking load... causes this event to fire, plus loads from clicking load.
-							// TODO: typing in the combo and clicking tab, causes this event to fire.
-							logger.fine("addressComboBox state change: " + e);
-							if (e.getStateChange() == ItemEvent.SELECTED)
-								onLoadButtonClick();
-						}
-					}
-				);
-		}
-		return addressComboBox;
-	}
-	/**
-	 * This method initializes loadButton	
-	 * 	
-	 * @return javax.swing.JButton	
-	 */
-	private JButton getLoadButton() {
-		if (loadButton == null) {
-			loadButton = new JButton();
-			loadButton.setToolTipText("Load selected location");
-			loadButton.setIcon(new ImageIcon(getClass().getResource("/net/sf/fmj/ui/images/import_wiz.png")));
-			loadButton.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent event) {
-					onLoadButtonClick();
-				}
-			});
-		}
-		return loadButton;
-	}
-	
-	private void onLoadButtonClick()
-	{
-		
-		
-		String location = (String) getAddressComboBox().getSelectedItem();
-		
-		if (location.trim().equals(""))
-		{
-			showError("No URL specified");
-			return;
-		}
-		
-		setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		
-		try {
-			getContainerPlayer().setMediaLocation(location, prefs.autoPlay);
-		}
-		catch (Throwable e) {
-			
-			logger.log(Level.WARNING, "" + e, e);
-			showError("" + e);	// normally we would just want e.getMessage(), but in many cases this can be blank, like a NoPlayerException.
-								// for now we'll just include the whole thing which includes the class.  A better way would be to 
-								// translate an empty NoPlayerException into "Player not found" - which BTW isn't that sensible to a user not familiar with JMF...
-			
-			
 
-			
-			return;
-		}
-		finally
-		{
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		}
-		
-		// update prefs with new URL
-		if (!prefs.recentUrls.contains(location))
-		{	prefs.recentUrls.add(0, location);
-			savePrefs();
-		}
-		else
-		{
-			// in list, make sure it is first.
-			if (!prefs.recentUrls.get(0).equals(location))
-			{
-				// not in first position.  remove and re-add at head.
-				prefs.recentUrls.remove(location);
-				prefs.recentUrls.add(0, location);
-				savePrefs();
-			}
-		}
-	}
 	
-	private void showError(String e)
-	{
-		JOptionPane.showConfirmDialog(this, e, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-		
-		
-	}
-	
-	
-	/**
-	 * This method initializes addressPanel	
-	 * 	
-	 * @return javax.swing.JPanel	
-	 */
-	private JPanel getAddressPanel() {
-		if (addressPanel == null) {
-			locationLabel = new JLabel();
-			locationLabel.setText("Location:");
-			addressPanel = new JPanel();
-			addressPanel.setLayout(new GridBagLayout());
-			//addressPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-			GridBagConstraints c1 = new GridBagConstraints();
-			c1.insets = new Insets(0, 2, 0, 2);
-			addressPanel.add(locationLabel, c1);
-			GridBagConstraints c2 = new GridBagConstraints();
-			c2.fill = GridBagConstraints.HORIZONTAL;
-			c2.weightx = 1.0;
-			c2.insets = new Insets(0, 2, 0, 2);
-			addressPanel.add(getAddressComboBox(), c2);
-			//GridBagConstraints c3 = new GridBagConstraints();
-			//addressPanel.add(getLoadButton(), c1);
-			
-		}
-		return addressPanel;
-	}
 	/**
 	 * This method initializes containerPlayer	
 	 * 	
@@ -289,7 +129,6 @@ public class PlayerPanel extends JPanel {
 		 
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(363, 218));
-        this.add(getPlayerToolBar(), BorderLayout.NORTH);
         
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BorderLayout());
@@ -378,83 +217,7 @@ public class PlayerPanel extends JPanel {
 		}
 	}
 
-	/**
-	 * This method initializes playerToolBar	
-	 * 	
-	 * @return javax.swing.JToolBar	
-	 */
-	private JToolBar getPlayerToolBar() {
-		if (playerToolBar == null) {
-			playerToolBar = new JToolBar();
-			playerToolBar.setFloatable(false);
-			playerToolBar.add(getOpenButton());
-			playerToolBar.add(getOpenCaptureDeviceButton());
-			playerToolBar.add(getAddressPanel());
-			playerToolBar.add(getLoadButton());
-		}
-		return playerToolBar;
-	}
 
-	/**
-	 * This method initializes openButton	
-	 * 	
-	 * @return javax.swing.JButton	
-	 */
-	private JButton getOpenButton() {
-		if (openButton == null) {
-			openButton = new JButton();
-			openButton.setToolTipText("Browse for media file...");
-			openButton.setIcon(new ImageIcon(getClass().getResource("/net/sf/fmj/ui/images/cvs_folder_rep.png")));
-			openButton.addActionListener(new ActionListener(){
-
-				public void actionPerformed(ActionEvent arg0) {
-					onOpenFile();
-				}
-				
-			});
-		}
-		return openButton;
-	}
-	
-	public void onOpenFile()
-	{
-		final JFileChooser chooser = new JFileChooser();
-		if (chooser.showOpenDialog(PlayerPanel.this) ==JFileChooser.APPROVE_OPTION)
-		{
-			final String urlStr = URLUtils.createUrlStr(chooser.getSelectedFile());
-			addMediaLocatorAndLoad(urlStr);
-		}
-	}
-	
-	private JButton getOpenCaptureDeviceButton()
-	{
-		if (openCaptureDeviceButton == null)
-		{
-			
-			openCaptureDeviceButton = new JButton();
-			openCaptureDeviceButton.setToolTipText("Select capture device...");
-			openCaptureDeviceButton.setIcon(new ImageIcon(getClass().getResource("/net/sf/fmj/ui/images/webcam.png"))); // TODO: different icon
-			openCaptureDeviceButton.addActionListener(new ActionListener(){
-
-				public void actionPerformed(ActionEvent arg0) {
-					onOpenCaptureDevice();
-					
-				}
-				
-			});
-		}
-		return openCaptureDeviceButton;
-	}
-	
-	public void onOpenCaptureDevice()
-	{
-		MediaLocator locator = CaptureDeviceBrowser.run(getParentFrame());
-		if (locator != null)
-		{
-			addMediaLocatorAndLoad(locator.toExternalForm());
-		}
-	}
-	
 	private Frame getParentFrame()
 	{
 		// TODO: there must be a better way in swing to do this...
@@ -505,7 +268,7 @@ public class PlayerPanel extends JPanel {
 		String url = RTPReceivePanel.run(getParentFrame());
 		if (url == null)
 			return;	// cancel
-		addMediaLocatorAndLoad(url);
+	//	addMediaLocatorAndLoad(url);
 	}
 	
 	public void onOpenURL()
@@ -513,7 +276,7 @@ public class PlayerPanel extends JPanel {
 		String url = URLPanel.run(getParentFrame());
 		if (url == null)
 			return;	// cancel
-		addMediaLocatorAndLoad(url);
+	//	addMediaLocatorAndLoad(url);
 	}
 	
 	public void onAutoPlay(boolean value)

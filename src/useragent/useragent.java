@@ -31,7 +31,6 @@ import net.sf.fmj.utility.ClasspathChecker;
 import net.sf.fmj.utility.JmfUtility;
 import net.sf.fmj.utility.LoggerSingleton;
 import net.sf.fmj.utility.OSUtils;
-import net.sf.fmj.ui.application.PlayerPanel;
 
 
 
@@ -45,6 +44,7 @@ public class useragent {
 
 
 	private void runPreprocess(String[] args){
+		// TODO: get some information
 		/*	Read the configuration file if exist.  
 		 * 		- Get the register server information. 
 		 * 		- Get URI
@@ -114,7 +114,7 @@ public class useragent {
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						//playerPanel.onOpenFile();
-						//playerPanel.onReceiveRTP();
+						playerPanel.onReceiveRTP();
 					}
 				}
 			);

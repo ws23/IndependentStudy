@@ -1,4 +1,4 @@
-package net.sf.fmj.ui.application;
+package useragent;
 
 import java.awt.Container;
 import java.awt.Dimension;
