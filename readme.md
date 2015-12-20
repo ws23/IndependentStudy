@@ -12,6 +12,12 @@
 
 **Keyword:** Session Initiation Protocol(SIP)、Peer-to-Peer(P2P) Network、Multimedia Stream
 
-## :P
+## Development Environment
+
+**OS:** Ubuntu 14.04 
+
+**Runtime Environment:** JavaSE-1.7
+
+**JDK:** java-8-openjdk-amd64
 
 
