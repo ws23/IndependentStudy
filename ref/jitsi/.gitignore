@@ -1,0 +1,15 @@
+classes
+.idea
+sc-bundles
+.gitignore.swp
+*.iws
+jitsi.iml
+jitsi-local.iml
+jitsi.ipr
+test-reports
+sip-communicator.utest.bin
+release
+lib/accounts.properties
+.DS_Store
+web-start/WebStartBuild.properties
+nbproject/private
