@@ -2,17 +2,18 @@
 
 ## Suppose
 
-Client: 
+##### Client: 
 	IP address: 192.168.168.228
 
-Server;
+##### Server:
 	IP address: 192.168.172.254
 
 ## Flow
 
 1. REGISTER -> 
 
->	REGISTER sip:192.168.172.254;transport=udp SIP/2.0	
+```
+	REGISTER sip:192.168.172.254;transport=udp SIP/2.0	
 
 	Call-ID: a7ee2d77df78754daf67bc68fdd80586@192.168.168.228
 
@@ -35,5 +36,5 @@ Server;
 	Contact: "Default Company" <sip:441@192.168.168.228:5060;transport=udp>;expires=3600
 
 	Content-Length: 0
-
+```
 2. 
