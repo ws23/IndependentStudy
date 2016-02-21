@@ -59,7 +59,13 @@ public class Main {
 
 	}
 	*/
+	
+
 	public static void main(String[] args) {
+		FileSetting fileSetting = new FileSetting(".usersetting"); 
+		if(fileSetting.readFile()  == false){
+			
+		}
 		
 	}
 
