@@ -13,7 +13,7 @@ import java.io.IOException;
  * 
  * 	Use:						To Process the setting file. 
  * 
- * 	Update Date: 	2016. 2. 22
+ * 	Update Date: 	2016. 3. 6
  * */
 
 public class FileSetting {
@@ -21,6 +21,14 @@ public class FileSetting {
 	private String fileName; 
 	private String userName; 
 	private int maxConnect; 
+	
+	public void setUserName(String user){
+		userName = user; 
+	}
+	
+	public void setMaxConnect(int max){
+		maxConnect = max; 
+	}
 	
 	public String getUserName(){
 		return userName; 
@@ -95,5 +103,11 @@ public class FileSetting {
 		fileName = name; 
 		userName = ""; 
 		maxConnect = 0; 
+	}
+	
+	public FileSetting(String name, String user, int max){
+		fileName = name; 
+		userName = user; 
+		maxConnect = max; 
 	}
 }
