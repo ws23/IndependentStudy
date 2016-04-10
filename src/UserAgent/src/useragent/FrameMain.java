@@ -40,7 +40,7 @@ public class FrameMain extends JFrame{
 		menuBar.add(menuStream); 
 		
 		// Stream > Create - Create a new real-time media streaming & create the seed.
-		final MenuItem menuItemCreate = new MenuItem("Create"); 
+		MenuItem menuItemCreate = new MenuItem("Create"); 
 		menuItemCreate.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
@@ -54,7 +54,7 @@ public class FrameMain extends JFrame{
 		menuStream.addSeparator(); 
 		
   		// Stream > Open - Open a seed to watch the stream.
-		final MenuItem menuItemOpen = new MenuItem("Open"); 
+		MenuItem menuItemOpen = new MenuItem("Open"); 
 		menuItemOpen.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
@@ -69,7 +69,7 @@ public class FrameMain extends JFrame{
 		menuStream.add(menuItemOpen); 
 		
 		// Stream > Close - Close the stream which is watching.
-		final MenuItem menuItemClose = new MenuItem("Close"); 
+		MenuItem menuItemClose = new MenuItem("Close"); 
 		menuItemClose.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
@@ -91,14 +91,14 @@ public class FrameMain extends JFrame{
 			}
 		); 
 		menuStream.add(menuItemExit); 
-	
+	/*
 		// Control
-		final Menu menuControl = new Menu(); 
+		Menu menuControl = new Menu(); 
 		menuControl.setLabel("Control"); 
 		menuBar.add(menuControl); 			
 			
 		// Control > Play - To play the stream if the seed was read. (When open a seed will auto to play it. )
-		final MenuItem menuItemPlay = new MenuItem("Play"); 
+		MenuItem menuItemPlay = new MenuItem("Play"); 
 		menuItemPlay.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
@@ -109,7 +109,7 @@ public class FrameMain extends JFrame{
 		menuControl.add(menuItemPlay); 
 		
   		// Control > Pause - To pause the stream if the streaming is player. (But the receive & forwarding will continue. )
-		final MenuItem menuItemPause = new MenuItem("Pause"); 
+		MenuItem menuItemPause = new MenuItem("Pause"); 
 		menuItemPause.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
@@ -120,7 +120,7 @@ public class FrameMain extends JFrame{
 		menuControl.add(menuItemPause); 			
 		
   		// Control > Stop - To stop connection. (The receive & forwarding will stop. )
-		final MenuItem menuItemStop = new MenuItem("Stop"); 
+		MenuItem menuItemStop = new MenuItem("Stop"); 
 		menuItemStop.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
@@ -129,14 +129,14 @@ public class FrameMain extends JFrame{
 			}
 		);			
 		menuControl.add(menuItemStop); 			
-		
+		*/
 		// Other
-			final Menu menuOther = new Menu(); 
-			menuOther.setLabel("Other"); 
-			menuBar.add(menuOther); 	
+		Menu menuOther = new Menu(); 
+		menuOther.setLabel("Other"); 
+		menuBar.add(menuOther); 	
 		
   		// Other > Help - To display the help pages.
-		final MenuItem menuItemHelp = new MenuItem("Help"); 
+		MenuItem menuItemHelp = new MenuItem("Help"); 
 		menuItemHelp.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
@@ -149,7 +149,7 @@ public class FrameMain extends JFrame{
 		menuOther.addSeparator(); 
 		
   		// Other > Configuration - To display the configuration page.
-		final MenuItem menuItemConfig = new MenuItem("Configuration"); 
+		MenuItem menuItemConfig = new MenuItem("Configuration"); 
 		menuItemConfig.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
@@ -160,15 +160,15 @@ public class FrameMain extends JFrame{
 		menuOther.add(menuItemConfig); 				
 		
 		menuOther.addSeparator(); 
-	  		// Other > About - To display 
-			final MenuItem menuItemAbout = new MenuItem("About"); 
-			menuItemAbout.addActionListener(
-				new ActionListener(){
-					public void actionPerformed(ActionEvent e){
-						// TODO: Action Event
-					}
+	  	// Other > About - To display 
+		MenuItem menuItemAbout = new MenuItem("About"); 
+		menuItemAbout.addActionListener(
+			new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					// TODO: Action Event
 				}
-			);			
+			}
+		);			
 		menuOther.add(menuItemAbout); 		 
 	
 		return menuBar; 
