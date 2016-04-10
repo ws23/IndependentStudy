@@ -97,7 +97,7 @@ public class Main {
 		// 發出註冊訊息
 		  	// 與 Proxy Server 建立連線，並發出註冊訊息
 		  	// 收到 Proxy Server 的權限索取 response 後同意，再次發出註冊訊息
-		  	// 收到 Proxy Server response 後結束與
+		  	// 收到 Proxy Server response 後結束與 Proxy Server 的連線
 		
 		// 開啟使用者介面
 		JFrame ui = new FrameMain();

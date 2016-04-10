@@ -11,8 +11,14 @@ package useragent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.*;
+
+import net.sf.fmj.utility.URLUtils;
 
 
 
@@ -20,6 +26,7 @@ import javax.swing.*;
 public class FrameMain extends JFrame{
 	
 	private PlayerPanel playerPanel; 
+	private String  URI; 
 	
 	
 	private MenuBar setMainMenuBar(){
@@ -52,7 +59,8 @@ public class FrameMain extends JFrame{
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					// TODO: Action Event		
-					playerPanel.onOpenFile();
+					onOpenFile();
+					
 					//playerPanel.onReceiveRTP();
 				}
 			}
@@ -171,6 +179,37 @@ public class FrameMain extends JFrame{
 		this.dispose();
 	}
 	
+	private String readP2PFileToGetURI(String fileName) {
+		// TODO: read the P2P file
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(fileName)); 
+			
+			String str = br.readLine(); 
+			
+			br.close(); 
+			return str; 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null; 
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null; 
+		} 	
+	}
+	
+	private void onOpenFile()
+	{
+		final JFileChooser chooser = new JFileChooser();
+		if (chooser.showOpenDialog(FrameMain.this) ==JFileChooser.APPROVE_OPTION) {
+			final String urlStr = URLUtils.createUrlStr(chooser.getSelectedFile());
+			System.out.println("urlStr = " + urlStr); 
+			
+			URI = readP2PFileToGetURI(urlStr);
+
+		}
+	} 
+	
+	
 	public FrameMain(){	
 		
 		this.setSize(1280, 720); 
@@ -182,9 +221,6 @@ public class FrameMain extends JFrame{
 		
 		playerPanel = new PlayerPanel(); 
 		this.add(playerPanel); 
-		
-		
-		
 		
 		this.setVisible(true); 
 		
