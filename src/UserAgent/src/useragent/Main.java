@@ -1,6 +1,13 @@
 package useragent;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /*		*
  * 	File:						useragent/Main.java
@@ -8,7 +15,7 @@ import javax.swing.JFrame;
  * 	Use:						The start point of useragent package. 
  * 								It is the client's (provider's and viewer's) interface.  
  * 
- * 	Update Date: 	2016. 3. 14
+ * 	Update Date: 	2016. 5. 3
  * */
 
 public class Main {
@@ -68,8 +75,40 @@ public class Main {
 	}
 	*/
 	
+	
 	private static String genUserName(){
-		return ""; 
+		// TODO: To generate the SIP user's name
+		String username = ""; 
+		/*
+		JFrame frameSetUserName = new JFrame(); 
+		frameSetUserName.setSize(200, 100); 
+		frameSetUserName.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		frameSetUserName.setLocation(0, 0); 
+		 
+		JLabel labelUserName = new JLabel(); 
+		JTextField textUserName = new JTextField(); 
+		JButton buttonOK = new JButton(); 
+		
+		labelUserName.setText("Set your own user name: "); 
+		buttonOK.setText("Send. "); 
+		
+		buttonOK.addActionListener(
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						username = textUserName.getText(); 
+						
+					}
+				}
+		); 
+		
+		
+		frameSetUserName.add(BorderLayout.NORTH, labelUserName);
+		frameSetUserName.add(BorderLayout.CENTER, textUserName); 
+		frameSetUserName.add(BorderLayout.SOUTH, buttonOK); 
+		
+		frameSetUserName.setVisible(true); 
+		*/
+		return username; 
 	}
 	
 	private static void setInfo(String user, int max){
@@ -84,16 +123,16 @@ public class Main {
 	
 
 	public static void main(String[] args) {
-		FileSetting fileSetting = new FileSetting(".usersetting"); 
+		FileSetting fileSetting = new FileSetting("usersetting");  
 		
 		// Read the setting file ( userName, maxConnect )
-		/*if (fileSetting.readFile()  != false){
+		if (fileSetting.readFile()  != false){
 			setInfo(fileSetting.getUserName(), fileSetting.getMaxConnect()); 
 		}
 		else {
 			setInfo(); 
 			
-		}*/
+		}
 		// 發出註冊訊息
 		  	// 與 Proxy Server 建立連線，並發出註冊訊息
 		  	// 收到 Proxy Server 的權限索取 response 後同意，再次發出註冊訊息
@@ -102,6 +141,7 @@ public class Main {
 		// 開啟使用者介面
 		JFrame ui = new FrameMain();
 
+		genUserName(); 
 		
 		
 	}

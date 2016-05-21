@@ -16,10 +16,11 @@ import java.net.*;
 public class Server extends java.lang.Thread {
 	private boolean outServer = false; 
 	private ServerSocket server; 
-	private final int serverPort = 13579; 
+	private int serverPort; 
 	
-	public Server(){
+	public Server(int port){
 		try {
+			serverPort = port; 
 			server = new ServerSocket(serverPort);
 		}
 		catch (IOException e) {
@@ -62,7 +63,6 @@ public class Server extends java.lang.Thread {
 			}
 		}
 	}
-	
 	
 		
 }

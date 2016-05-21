@@ -27,7 +27,7 @@ public class Client {
 		try{
 			client.connect(isa, 10000); 
 			BufferedOutputStream out = new BufferedOutputStream(client.getOutputStream()); 
-			out.write("Sen From Client".getBytes()); 
+			out.write("Send From Client".getBytes()); 
 			out.flush(); 
 			out.close(); 
 			out = null; 

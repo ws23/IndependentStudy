@@ -44,8 +44,18 @@ public class FrameMain extends JFrame{
 		menuItemCreate.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					// TODO: Action Event
-					 playerPanel.onOpenCaptureDevice();
+					
+					// TODO: 開啟擷取影片之 Device 
+					playerPanel.onOpenCaptureDevice();
+					
+					// TODO: 加入 P2P 網路
+				
+					
+					// TODO: 將 P2P Server 位址與頻道 ID 製作成種子檔案
+					
+					
+					
+					
 				}
 			}
 		); 
@@ -57,10 +67,12 @@ public class FrameMain extends JFrame{
 		MenuItem menuItemOpen = new MenuItem("Open"); 
 		menuItemOpen.addActionListener(
 			new ActionListener(){
-				public void actionPerformed(ActionEvent e){
-					// TODO: Action Event		
-					onOpenFile();
+				public void actionPerformed(ActionEvent e){		
 					
+					// 選擇 Seed 後取得來源之 URI 
+					onOpenFileAndGetURI();
+					
+					// TODO: 以 SIP 方式建立連線，並取得 RTP 串流資訊
 					//playerPanel.onReceiveRTP();
 				}
 			}
@@ -73,7 +85,9 @@ public class FrameMain extends JFrame{
 		menuItemClose.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					// TODO: Action Event
+					// TODO: 傳送 BYE 訊息給轉播端（SIP）
+					
+					// TODO: 離開 P2P 網路
 				}
 			}
 		);
@@ -140,7 +154,7 @@ public class FrameMain extends JFrame{
 		menuItemHelp.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					// TODO: Action Event
+					// TODO: 顯示使用教學視窗
 				}
 			}
 		);			
@@ -153,13 +167,14 @@ public class FrameMain extends JFrame{
 		menuItemConfig.addActionListener(
 			new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					// TODO: Action Event
+					// TODO: 打開更改設定之視窗
+					FrameSetting frameSetting =  new FrameSetting(); 
 				}
 			}
 		);			
 		menuOther.add(menuItemConfig); 				
+		menuOther.addSeparator();
 		
-		menuOther.addSeparator(); 
 	  	// Other > About - To display 
 		MenuItem menuItemAbout = new MenuItem("About"); 
 		menuItemAbout.addActionListener(
@@ -180,14 +195,20 @@ public class FrameMain extends JFrame{
 	}
 	
 	private String readP2PFileToGetURI(String fileName) {
-		// TODO: read the P2P file
-		try {
+		// read the P2P file
+		try { 
 			BufferedReader br = new BufferedReader(new FileReader(fileName)); 
-			
-			String str = br.readLine(); 
-			
+			String p2pIP = br.readLine(); 
+			String p2pID = br.readLine();
+			String tmp = br.readLine(); 
 			br.close(); 
-			return str; 
+			if(tmp == null){
+				// TODO: 與 P2P Server 建立連線，取得轉播 URI
+				
+				return "ws23@134.208.3.15"; // 暫時先回這個 URI 
+			}
+			else 
+				return null;  
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null; 
@@ -197,16 +218,20 @@ public class FrameMain extends JFrame{
 		} 	
 	}
 	
-	private void onOpenFile()
+	private String onOpenFileAndGetURI()
 	{
 		final JFileChooser chooser = new JFileChooser();
 		if (chooser.showOpenDialog(FrameMain.this) ==JFileChooser.APPROVE_OPTION) {
 			final String urlStr = URLUtils.createUrlStr(chooser.getSelectedFile());
-			System.out.println("urlStr = " + urlStr); 
+			String urlFileName = urlStr.substring(7);  
+			System.out.println("urlFileName = " + urlFileName); 
 			
-			URI = readP2PFileToGetURI(urlStr);
-
+			URI = readP2PFileToGetURI(urlFileName);
+			System.out.println("URI = " + URI); 
+			
+			return URI; 
 		}
+		return null;
 	} 
 	
 	

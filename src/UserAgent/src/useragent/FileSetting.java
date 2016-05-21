@@ -48,23 +48,25 @@ public class FileSetting {
 	// [Out] Boolean: readFile success or not 
 	// [Use] To read the file and store the 
 	public boolean readFile() {
-		// TODO: read the setting file
+		// read the setting file
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(fileName)); 
+			FileReader file = new FileReader(fileName); 
+			BufferedReader fr = new BufferedReader(file); 
 			
 			String str[] = new String[3]; 
 			
-			str[0] = br.readLine(); 
-			str[1] = br.readLine(); 
-			str[2] = br.readLine(); 
+			str[0] = fr.readLine(); 
+			str[1] = fr.readLine(); 
+			str[2] = fr.readLine(); 
 			
 			if(str[2] == null && str[1] != null && str[0] != null) {
 				userName = str[0]; 
 				maxConnect = Integer.parseInt(str[1]);
-				br.close();
+				System.out.println(userName + '\n' + maxConnect ); 
+				file.close();
 				return true; 
 			}	
-			br.close(); 
+			file.close(); 
 			return false; 
 		} catch (FileNotFoundException e) {
 			createFile(); 
@@ -83,14 +85,18 @@ public class FileSetting {
 	// [Use] To write the variables into file
 	public boolean writeFile(){
 		// TODO: write into the setting file
-		FileOutputStream fstream; 
-		
+		// Have some problem that cannot write into file
 		try{
-			BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)); 
-			bw.write(userName);
-			bw.newLine(); 
-			bw.write(maxConnect); 
-			bw.newLine(); 
+			FileWriter file = new FileWriter(fileName); 
+			BufferedWriter fw = new BufferedWriter(file); 
+			 
+			fw.write(userName);
+			fw.newLine(); 
+			System.out.println(String.valueOf(maxConnect)); 
+			fw.write(String.valueOf(maxConnect)); 
+			fw.newLine();
+			fw.close(); 
+			file.close(); 
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false; 

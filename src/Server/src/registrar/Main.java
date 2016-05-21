@@ -6,14 +6,14 @@ package registrar;
  * 	Use:						The start point of registrar package. 
  * 								It is a SIP registrar server. 
  * 
- * 	Update Date: 	2015. 12. 24
+ * 	Update Date: 	2016. 5. 21
  * */
 
 
 public class Main {
 
 	public static void main(String[] args) {
-		(new Server()).start(); 
+		(new Server(13577)).start(); 
 	}
 }
 
