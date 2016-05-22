@@ -1,5 +1,7 @@
 package tracking;
 
+import registrar.Server;
+
 /*		*
  * 	File:						tracking/Main.java
  * 
@@ -12,7 +14,7 @@ package tracking;
 public class Main {
 
 	public static void main(String[] args) {
-		Server server = new Server(13579);
+		(new Server(13579)).start(); 
 	}
 }
 

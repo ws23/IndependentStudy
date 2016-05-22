@@ -244,9 +244,9 @@ public class FrameMain extends JFrame{
 		
 		this.setMenuBar(setMainMenuBar()); 
 		
-		playerPanel = new PlayerPanel(); 
+		/*playerPanel = new PlayerPanel(); 
 		this.add(playerPanel); 
-		
+		*/
 		this.setVisible(true); 
 		
 	}
