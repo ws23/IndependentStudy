@@ -27,6 +27,7 @@ public class Server extends java.lang.Thread {
 			try {
 				serverPort = port; 
 				server = new ServerSocket(serverPort);
+				trees = new ArrayList<SearchingTree>(); 
 			}
 			catch (IOException e) {
 				System.out.println("Socket start failed. "); 
@@ -37,14 +38,17 @@ public class Server extends java.lang.Thread {
 		private String createVideo(String uri, int max){
 			// provider
 			SearchingTree tmp = new SearchingTree(); 
+			tmp.add(uri, max);
 			trees.add(tmp); 			
-			tmp.add(uri, max); 
 			return  tmp.getStreamID(); 
 		}
 		
 		private SearchingTree findTree(String id){
+			System.out.println("Trees");
+			System.out.println(trees.size());
 			for(int i=0; i<trees.size(); i++){
-				if(trees.get(i).getStreamID() == id)
+				System.out.println("Tree[" + i + "] = " + trees.get(i).getStreamID()); 
+				if(trees.get(i).getStreamID().equals(id))
 					return trees.get(i); 
 			}
 			return null; 
@@ -53,7 +57,8 @@ public class Server extends java.lang.Thread {
 		private String findParent(String id, String uri, int max){
 			// viewer 
 			// to get the parent's URI
-			SearchingTree tmp = findTree(id);
+			SearchingTree tmp; 
+			tmp = findTree(id);
 			String parent = tmp.add(uri, max); 
 			
 			return parent; 
@@ -76,48 +81,66 @@ public class Server extends java.lang.Thread {
 					socket.setSoTimeout(15000); 
 							
 					// get data from client ( command, uri, max, streamID )
-					in = new BufferedInputStream(socket.getInputStream()); 
+					in = new BufferedInputStream(socket.getInputStream());
 					byte[] b = new byte[1024]; 
 					String data = ""; 
-					int length; 
-					while((length = in.read(b)) > 0){
-						data += new String(b, 0, length); 
-					}
+					int length = in.read(b); 	
+					data += new String(b, 0, length);
 					System.out.println("The data I got: " + data);
-					in.close(); 
-					in = null;
 
-				
+				// TODO: 
 					// parse data ( command, uri, max, streamID )
 					String[] datas = data.split(",");
-					int cmd = Integer.parseInt(datas[0], 10); 
+					String cmd = datas[0]; 
 					String URI = datas[1]; 
 					int maxConnect = Integer.parseInt(datas[2], 10);
 					String streamID = ""; 
 
-					if(cmd == 1){
+					if(cmd.equals("JOIN")){
 						streamID = datas[3];
 					}
 					// process command ( 0: provider, 1: viewer )
-					String parentURI = ""; 
-					if ( cmd == 0 ) {
+				String parentURI = ""; 
+					if ( cmd.equals("CREATE") ) {
 						streamID = createVideo(URI, maxConnect); 
 					}
-					else if ( cmd == 1 ) {
+					else if ( cmd.equals("JOIN") ) {
 						parentURI = findParent(streamID, URI, maxConnect);
 					}
+					System.out.println("streamID: " + streamID);
+					System.out.println("parentURI: " + parentURI); 
 					
 					// send data to client (response)
+
 					
 					out = new BufferedOutputStream(socket.getOutputStream());
-					if( cmd ==0 ){
-						out.write(streamID.getBytes()); 
+
+					if( cmd.equals("CREATE") ){
+						if(streamID == null){
+							out.write("ERROR".getBytes());
+							System.out.println("ERROR"); 
+						}
+						else{
+							out.write(("CREATE,ACK," + streamID).getBytes());
+							System.out.println("CREATE,ACK," + streamID); 
+						}
 					}
-					else if ( cmd == 1 ) {
-						out.write(parentURI.getBytes()); 
+					else if ( cmd.equals("JOIN") ) {
+						if(parentURI == null){
+							out.write("ERROR".getBytes());
+							System.out.println("ERROR"); 
+						}
+						else{
+							out.write(("JOIN,ACK," + parentURI).getBytes());
+							System.out.println("JOIN,ACK," + parentURI); 
+						}
 					} 
 					out.flush(); 
-					out.close(); 
+								
+					in.close(); 
+					in = null; 
+
+					out.close();
 					out = null; 
 					
 					socket.close(); 

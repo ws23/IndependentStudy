@@ -112,7 +112,6 @@ public class SearchingTree {
 			(tree.get(tree.indexOf(parent))).addChildren(newNode); 
 			parentID = parent.URI; 
 		}
-		
 		// return parent's URI
 		return parentID; 
 	}

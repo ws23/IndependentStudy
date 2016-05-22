@@ -38,11 +38,6 @@ public class FileSetting {
 		return maxConnect; 
 	}
 	
-	public boolean createFile(){
-		// TODO: create the setting file
-		
-		return false; 
-	}
 	
 	// [In] 
 	// [Out] Boolean: readFile success or not 
@@ -69,7 +64,6 @@ public class FileSetting {
 			file.close(); 
 			return false; 
 		} catch (FileNotFoundException e) {
-			createFile(); 
 			e.printStackTrace();
 			return false; 
 		} catch (IOException e) {
@@ -92,7 +86,6 @@ public class FileSetting {
 			 
 			fw.write(userName);
 			fw.newLine(); 
-			System.out.println(String.valueOf(maxConnect)); 
 			fw.write(String.valueOf(maxConnect)); 
 			fw.newLine();
 			fw.close(); 

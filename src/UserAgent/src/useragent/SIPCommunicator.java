@@ -1,5 +1,6 @@
 package useragent;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -10,26 +11,35 @@ import java.net.Socket;
  * 
  * 	Use:						A communicator to communicate with SIP proxy servers. 
  * 
- * 	Update Date: 	2016. 3. 28
+ * 	Update Date: 	2016. 5. 23
  * */
 
 public class SIPCommunicator {
-
 	
 	private String address; 
 	private int port; 
+	private String userName; 
 	
-	public SIPCommunicator(String addr, int prt){
+	
+	public SIPCommunicator(String addr, int prt, String username){
 		address = addr; 
 		port = prt; 
+		userName = username; 
 		
 		Socket client = new Socket(); 
-		InetSocketAddress isa = new InetSocketAddress(address, port); 
+		InetSocketAddress isa = new InetSocketAddress(address, port);
+		BufferedOutputStream out; 
+		BufferedInputStream in; 
 		try {
-			client.connect(isa, 10000); 
-			BufferedOutputStream out = new BufferedOutputStream(client.getOutputStream()); 
-			out.write("Send From UserAgent. ".getBytes()); 
+			client.connect(isa, 15000);
+
+			
+			out = new BufferedOutputStream(client.getOutputStream()); 
+			out.write(("REGISTER," + userName).getBytes()); 
 			out.flush(); 
+			
+			
+			
 			out.close(); 
 			out = null; 
 			client.close(); 

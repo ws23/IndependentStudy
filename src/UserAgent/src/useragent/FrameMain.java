@@ -12,8 +12,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -26,8 +28,10 @@ import net.sf.fmj.utility.URLUtils;
 public class FrameMain extends JFrame{
 	
 	private PlayerPanel playerPanel; 
-	private String  URI; 
 	
+	private String URI; 
+	private int maxConnect; 
+	private String parentURI; 
 	
 	private MenuBar setMainMenuBar(){
 		
@@ -46,12 +50,56 @@ public class FrameMain extends JFrame{
 				public void actionPerformed(ActionEvent e){
 					
 					// TODO: 開啟擷取影片之 Device 
-					playerPanel.onOpenCaptureDevice();
+					//playerPanel.onOpenCaptureDevice();
 					
-					// TODO: 加入 P2P 網路
-				
+					/********** 此段落真正來說不該存在**********  
+					try {
+						Runtime rt = Runtime.getRuntime(); 
+						Process proc = rt.exec("cvlc screen:// :input-slave=alsa:// :screen-fps=10 :screen-follow-mouse :sout='#transcode{acodec=mpga, vcodec=h264, vb=1024, scale=0.6, venc=x264{scenecut=100, bframes=0, keyint=10}} :std{access=http, mux=ts, dst=:8080}'"); 
+						int exitVal = proc.waitFor(); 
+						System.out.println("Process exitValue: " + exitVal); 
+					}
+					catch (Throwable t){
+						t.printStackTrace(); 
+					}
+					 //*************************************/
 					
-					// TODO: 將 P2P Server 位址與頻道 ID 製作成種子檔案
+					
+					String tmp = readConfigFileToGetP2PServer();
+					String addrs[] = tmp.split(":"); 
+					String streamID = ""; 
+					
+					// 加入 P2P 網路
+					P2PTracker tracker = new P2PTracker(addrs[0], Integer.parseInt(addrs[1]), URI, maxConnect); 
+					if( tracker.getState() == true ){
+						streamID = tracker.getData();
+					}
+					else{
+						streamID = null; 
+					} 
+					
+					// 將 P2P Server 位址與頻道 ID 製作成種子檔案
+					
+					if(streamID != null){
+						try {
+							FileWriter file = new FileWriter(streamID + ".seed"); 
+							BufferedWriter fw = new BufferedWriter(file); 
+							
+							fw.write(addrs[0] + ":" + addrs[1]);
+							fw.newLine(); 
+							fw.write(streamID); 
+							fw.newLine(); 
+							fw.close(); 
+							file.close(); 
+						}
+						catch ( IOException t ) {
+							t.printStackTrace(); 
+						}
+
+					}
+					else {
+						// TODO: 跳出種子製作失敗訊息
+					}
 					
 					
 					
@@ -70,7 +118,7 @@ public class FrameMain extends JFrame{
 				public void actionPerformed(ActionEvent e){		
 					
 					// 選擇 Seed 後取得來源之 URI 
-					onOpenFileAndGetURI();
+					onOpenFileAndGetParentURI();
 					
 					// TODO: 以 SIP 方式建立連線，並取得 RTP 串流資訊
 					//playerPanel.onReceiveRTP();
@@ -193,19 +241,16 @@ public class FrameMain extends JFrame{
 	private void onExit(){
 		this.dispose();
 	}
-	
-	private String readP2PFileToGetURI(String fileName) {
-		// read the P2P file
-		try { 
-			BufferedReader br = new BufferedReader(new FileReader(fileName)); 
-			String p2pIP = br.readLine(); 
-			String p2pID = br.readLine();
+
+	private String readConfigFileToGetSIPServer(){
+		try{
+			BufferedReader br = new BufferedReader(new FileReader("config")); 
+			String sipAddrs = br.readLine(); 
+			String p2pAddrs = br.readLine();
 			String tmp = br.readLine(); 
 			br.close(); 
 			if(tmp == null){
-				// TODO: 與 P2P Server 建立連線，取得轉播 URI
-				
-				return "ws23@134.208.3.15"; // 暫時先回這個 URI 
+				return sipAddrs;  
 			}
 			else 
 				return null;  
@@ -218,7 +263,64 @@ public class FrameMain extends JFrame{
 		} 	
 	}
 	
-	private String onOpenFileAndGetURI()
+	private String readConfigFileToGetP2PServer(){
+		try{
+			BufferedReader br = new BufferedReader(new FileReader("config")); 
+			String sipAddrs = br.readLine(); 
+			String p2pAddrs = br.readLine();
+			String tmp = br.readLine(); 
+			br.close(); 
+			if(tmp == null){
+				return p2pAddrs;  
+			}
+			else 
+				return null;  
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null; 
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null; 
+		} 			
+	}
+	
+	private String readP2PFileToGetURI(String fileName) {
+		// read the P2P file
+		try { 
+			BufferedReader br = new BufferedReader(new FileReader(fileName)); 
+			String p2pIP = br.readLine(); 
+			String p2pID = br.readLine();
+			String tmp = br.readLine(); 
+			br.close(); 
+			
+			
+			if(tmp == null){
+				// parse data
+				String addrs[] = p2pIP.split(":"); // IP:port 
+				
+				// 與 P2P Server 建立連線，取得轉播 URI
+				P2PTracker tracker; 
+				int prt = Integer.parseInt(addrs[1]); 
+				tracker = new P2PTracker(addrs[0], prt, URI, maxConnect, p2pID);  
+				if(tracker.getState() == true){
+					return tracker.getData(); 
+				}
+				else{
+					return null; 
+				}
+			}
+			else 
+				return null;  
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null; 
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null; 
+		} 	
+	}
+	
+	private String onOpenFileAndGetParentURI()
 	{
 		final JFileChooser chooser = new JFileChooser();
 		if (chooser.showOpenDialog(FrameMain.this) ==JFileChooser.APPROVE_OPTION) {
@@ -226,16 +328,22 @@ public class FrameMain extends JFrame{
 			String urlFileName = urlStr.substring(7);  
 			System.out.println("urlFileName = " + urlFileName); 
 			
-			URI = readP2PFileToGetURI(urlFileName);
+			parentURI = readP2PFileToGetURI(urlFileName);
 			System.out.println("URI = " + URI); 
 			
-			return URI; 
+			return parentURI; 
 		}
 		return null;
 	} 
 	
 	
-	public FrameMain(){	
+	public FrameMain(String username, int max){	
+		
+		String sipServer = readConfigFileToGetSIPServer(); 
+		String sipServerIP = sipServer.split(":")[0]; 
+		
+		URI = username + "@" + sipServerIP; 
+		maxConnect = max; 
 		
 		this.setSize(1280, 720); 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
